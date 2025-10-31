@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <p class="producto-sku">SKU: ${prod.sku}</p>
                     <p class="producto-precio">$${prod.precio_venta.toFixed(2)}</p>
                     <p class="producto-stock">Stock: ${prod.stock}</p>
-                    <button class="btn-agregar">Agregar al carrito</button>
+                    <button class="add-to-cart" data-id="${prod.id}" data-name="${prod.nombre}" data-price="${prod.precio_venta}" data-image="${prod.imagen || 'https://via.placeholder.com/250x200?text=Sin+Imagen'}">Añadir al Carrito</button>
                 </div>
             `;
             contenedor.appendChild(card);

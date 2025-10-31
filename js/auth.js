@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario) {
         // Mostrar info del usuario
-        userName.textContent = `👋 Bienvenido, ${usuario.nombre}`;
+        userName.textContent = `${usuario.nombre}`;
         userInfo.style.display = "flex";
 
         // Estilo rápido

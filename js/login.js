@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (tokenIngresado === tokenReal) {
                 alert("Inicio de sesión exitoso 🎉");
                 localStorage.setItem("usuario", JSON.stringify({
+                    id: usuario.id,
                     nombre: usuario.nombre_completo,
                     email: usuario.email
                 }));
