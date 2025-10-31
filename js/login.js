@@ -7,13 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnVerifyToken = document.getElementById("verify-token");
 
     const API_USUARIOS = "http://34.58.87.183/api/usuarios";
-    const API_AUTENTICACION = "http://34.56.85.127/test-email";
+    const API_AUTENTICACION = "http://34.56.85.127/enviar-token";
+    const API_VERIFICAR_TOKEN = "http://34.56.85.127/token-enviado?correo=";
 
     let userEmail = "";
     let usuario = {};
-    let generatedToken = ""; // se simula el token que envía la API
 
-    // 1️⃣ Paso 1: Verificar si el correo existe
+    // 1️⃣ Verificar si el correo existe en la API de usuarios
     btnVerifyEmail.addEventListener("click", async () => {
         userEmail = emailInput.value.trim();
 
@@ -25,10 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch(API_USUARIOS);
             if (!response.ok) throw new Error("No se pudo conectar con la API de usuarios.");
-
             const data = await response.json();
 
-            // Buscar si el correo existe en la lista
             usuario = data.data.find(u => u.email === userEmail);
 
             if (!usuario) {
@@ -36,34 +34,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // 2️⃣ Enviar solicitud para mandar el token al correo
+            // 2️⃣ Enviar token real al correo mediante la API de autenticación
             const sendToken = await fetch(API_AUTENTICACION, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: userEmail, nombre: usuario.nombre_completo })
+                body: JSON.stringify({
+                    correo: userEmail,
+                    tipo: "registro"
+                })
             });
+
+            const result = await sendToken.text();
+            console.log("Respuesta API autenticación:", result);
 
             if (!sendToken.ok) throw new Error("Error al enviar el token al correo.");
 
             alert(`Se ha enviado un token a tu correo (${userEmail}).`);
-            generatedToken = generarToken(); // Simulamos el token localmente
 
-            // Mostrar campo de token y botón de verificación
+            // Mostrar campo del token
             tokenStep.style.display = "block";
             btnVerifyToken.style.display = "block";
-
-            // Ocultar paso de correo y su botón
+            // Ocultar paso del correo
             emailStep.style.display = "none";
             btnVerifyEmail.style.display = "none";
 
         } catch (error) {
             console.error("Error al verificar el correo:", error);
-            alert(error.message);
+            alert("Ocurrió un error: " + error.message);
         }
     });
 
-    // 3️⃣ Paso 2: Verificar token
-    btnVerifyToken.addEventListener("click", () => {
+    // 3️⃣ Verificar token real desde la API
+    btnVerifyToken.addEventListener("click", async () => {
         const tokenIngresado = tokenInput.value.trim();
 
         if (!tokenIngresado) {
@@ -71,27 +73,36 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Aquí normalmente harías un POST a /verificar-token, pero lo simulamos:
-        if (tokenIngresado === generatedToken) {
-            alert("Inicio de sesión exitoso 🎉");
-            localStorage.setItem("usuario", JSON.stringify({
-                nombre: usuario.nombre_completo,
-                email: usuario.email
-            }));
-            window.location.href = "index.html";
-        } else {
-            alert("Token incorrecto. Verifica e inténtalo de nuevo.");
+        try {
+            const response = await fetch(API_VERIFICAR_TOKEN + encodeURIComponent(userEmail));
+            if (!response.ok) throw new Error("No se pudo verificar el token.");
+
+            const tokenData = await response.json();
+            console.log("Token desde API:", tokenData);
+
+            const tokenReal = tokenData.token;
+            const expiracion = new Date(tokenData.expira);
+            const ahora = new Date();
+
+            if (ahora > expiracion) {
+                alert("El token ha expirado. Solicita uno nuevo.");
+                return;
+            }
+
+            if (tokenIngresado === tokenReal) {
+                alert("Inicio de sesión exitoso 🎉");
+                localStorage.setItem("usuario", JSON.stringify({
+                    nombre: usuario.nombre_completo,
+                    email: usuario.email
+                }));
+                window.location.href = "index.html";
+            } else {
+                alert("Token incorrecto. Verifica e inténtalo de nuevo.");
+            }
+
+        } catch (error) {
+            console.error("Error al verificar el token:", error);
+            alert("Ocurrió un error al verificar el token: " + error.message);
         }
     });
-
-    // 🔢 Función para simular token aleatorio
-    function generarToken() {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let token = "";
-        for (let i = 0; i < 8; i++) {
-            token += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        console.log("Token simulado (para pruebas):", token);
-        return token;
-    }
 });
