@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const contenedor = document.getElementById("productos-container");
+    const inputBusqueda = document.querySelector(".search-box input");
+    const botonBusqueda = document.querySelector(".search-box button");
 
+    let productos = [];
+
+    // 🟢 Cargar todos los productos al inicio
     try {
         const response = await fetch("http://34.44.224.107/productos");
 
@@ -8,12 +13,48 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
-        const productos = await response.json();
+        productos = await response.json();
         console.log("Productos cargados:", productos);
 
+        mostrarProductos(productos); // Mostrar todos al inicio
+
+    } catch (error) {
+        console.error("Error al cargar los productos:", error);
+        contenedor.innerHTML = "<p style='color:red;'>No se pudieron cargar los productos.</p>";
+    }
+
+    // 🔍 Evento de búsqueda
+    botonBusqueda.addEventListener("click", () => {
+        const query = inputBusqueda.value.trim().toLowerCase();
+
+        if (!query) {
+            mostrarProductos(productos); // Si está vacío, mostrar todos
+            return;
+        }
+
+        const resultados = productos.filter(p =>
+            p.nombre.toLowerCase().includes(query)
+        );
+
+        if (resultados.length === 0) {
+            contenedor.innerHTML = "<p>No se encontraron productos con ese nombre.</p>";
+        } else {
+            mostrarProductos(resultados);
+        }
+    });
+
+    // 🧭 Permitir buscar también con Enter
+    inputBusqueda.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            botonBusqueda.click();
+        }
+    });
+
+    // 💡 Función reutilizable para mostrar productos
+    function mostrarProductos(lista) {
         contenedor.innerHTML = "";
 
-        productos.forEach(prod => {
+        lista.forEach(prod => {
             const card = document.createElement("div");
             card.classList.add("producto-card");
 
@@ -36,11 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </button>
                 </div>
             `;
+
             contenedor.appendChild(card);
         });
-
-    } catch (error) {
-        console.error("Error al cargar los productos:", error);
-        contenedor.innerHTML = "<p style='color:red;'>No se pudieron cargar los productos.</p>";
     }
 });

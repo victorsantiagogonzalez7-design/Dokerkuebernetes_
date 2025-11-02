@@ -10,6 +10,22 @@
 </head>
 
 <body>
+    <!-- Modal de notificaciones -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Notificación</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCloseBtn" class="btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
     <section>
         <form id="login-form">
             <h1>Inicio de sesión</h1>
@@ -37,4 +53,5 @@
 
     <script src="js/login.js"></script>
 </body>
+
 </html>

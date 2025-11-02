@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userEmail = emailInput.value.trim();
 
         if (!userEmail) {
-            alert("Por favor, ingresa tu correo electrónico.");
+            showModal("Por favor, ingresa tu correo electrónico.");
             return;
         }
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             usuario = data.data.find(u => u.email === userEmail);
 
             if (!usuario) {
-                alert("El correo no está registrado. Verifica tu correo o regístrate.");
+                showModal("El correo no está registrado. Verifica tu correo o regístrate.");
                 return;
             }
 
@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const result = await sendToken.text();
-            console.log("Respuesta API autenticación:", result);
+            //console.log("Respuesta API autenticación:", result);
 
             if (!sendToken.ok) throw new Error("Error al enviar el token al correo.");
 
-            alert(`Se ha enviado un token a tu correo (${userEmail}).`);
+            showModal(`Se ha enviado un token a tu correo (${userEmail}).`);
 
             // Mostrar campo del token
             tokenStep.style.display = "block";
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("Error al verificar el correo:", error);
-            alert("Ocurrió un error: " + error.message);
+            showModal("Ocurrió un error: " + error.message);
         }
     });
 
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tokenIngresado = tokenInput.value.trim();
 
         if (!tokenIngresado) {
-            alert("Por favor, ingresa el token enviado a tu correo.");
+            showModal("Por favor, ingresa el token enviado a tu correo.");
             return;
         }
 
@@ -85,12 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const ahora = new Date();
 
             if (ahora > expiracion) {
-                alert("El token ha expirado. Solicita uno nuevo.");
+                showModal("El token ha expirado", "warning");
                 return;
             }
 
             if (tokenIngresado === tokenReal) {
-                alert("Inicio de sesión exitoso 🎉");
+                showModal("Inicio de sesión exitoso 🎉", "success");
                 localStorage.setItem("usuario", JSON.stringify({
                     id: usuario.id,
                     nombre: usuario.nombre_completo,
@@ -98,12 +98,73 @@ document.addEventListener("DOMContentLoaded", () => {
                 }));
                 window.location.href = "index.html";
             } else {
-                alert("Token incorrecto. Verifica e inténtalo de nuevo.");
+                showModal("Token incorrecto. Verifica e inténtalo de nuevo.");
             }
 
         } catch (error) {
             console.error("Error al verificar el token:", error);
-            alert("Ocurrió un error al verificar el token: " + error.message);
+            showModal("Error al verificar el token", "error" + error.message);
+        }
+    });
+
+    function showModal(message, type = 'info') {
+        const modal = document.getElementById('notificationModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalHeader = document.querySelector('.modal-header');
+
+        // Resetear estilos
+        modalHeader.style.backgroundColor = '#f8f9fa';
+
+        // Configurar según el tipo
+        switch (type) {
+            case 'error':
+                modalTitle.textContent = 'Error';
+                modalHeader.style.backgroundColor = '#f8d7da';
+                break;
+            case 'success':
+                modalTitle.textContent = '¡Éxito!';
+                modalHeader.style.backgroundColor = '#d1edff';
+                break;
+            case 'warning':
+                modalTitle.textContent = 'Advertencia';
+                modalHeader.style.backgroundColor = '#fff3cd';
+                break;
+            default:
+                modalTitle.textContent = 'Notificación';
+        }
+
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+    }
+    // Función para cerrar el modal
+    function closeModal() {
+        const modal = document.getElementById('notificationModal');
+        modal.style.display = 'none';
+    }
+
+    // Event listeners para cerrar el modal
+    const modal = document.getElementById('notificationModal');
+    const closeBtn = document.querySelector('.close');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+    // Cerrar con el botón X
+    closeBtn.addEventListener('click', closeModal);
+
+    // Cerrar con el botón Aceptar
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    // Cerrar al hacer clic fuera del modal
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Cerrar con la tecla ESC
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            closeModal();
         }
     });
 });

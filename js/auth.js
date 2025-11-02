@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const loginIcon = document.querySelector(".login-icon");
     const userInfo = document.getElementById("user-info");
     const userName = document.getElementById("user-name");
     const logoutBtn = document.getElementById("logout-btn");
@@ -6,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔹 Verificar si hay usuario logeado en localStorage
     const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-    if (usuario) {
+    if (usuario && usuario.nombre) {
         // Mostrar info del usuario
+        loginIcon.style.display = "none";
         userName.textContent = `${usuario.nombre}`;
         userInfo.style.display = "flex";
 
@@ -16,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userInfo.style.gap = "10px";
     } else {
         // Si no hay sesión, ocultar el contenedor
+        loginIcon.style.display = "flex";
         userInfo.style.display = "none";
     }
 
@@ -25,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (confirmLogout) {
             localStorage.removeItem("usuario");
             alert("Sesión cerrada correctamente.");
+            loginIcon.style.display = "flex";
+            userInfo.style.display = "none";
             window.location.href = "index.html"; // Redirige al inicio
         }
     });

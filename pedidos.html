@@ -35,29 +35,29 @@
 
                 <!-- barrita de busqueda -->
                 <div class="header-actions">
-                <div class="search-box">
-                    <input type="text" placeholder="Buscar autopartes...">
-                    <button><i class="fas fa-search"></i></button>
-                </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar autopartes...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
 
-                <!-- Ícono de carrito -->
-                <div class="cart-icon" id="open-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
+                    <!-- Ícono de carrito -->
+                    <div class="cart-icon" id="open-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
 
-                <!-- Ícono de login -->
-                <div class="login-icon">
-                    <a href="loggin.html" title="Iniciar sesión">
-                        <i class="fas fa-user"></i>
-                    </a>
-                </div>
-                <div id="user-info" style="display: none;">
-                    <span id="user-name"></span>
-                    <button id="logout-btn">Cerrar sesión</button>
+                    <!-- Ícono de login -->
+                    <div class="login-icon">
+                        <a href="loggin.html" title="Iniciar sesión">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                    <div id="user-info" style="display: none;">
+                        <span id="user-name"></span>
+                        <button id="logout-btn">Cerrar sesión</button>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <!-- Carrito de Compras -->
@@ -85,7 +85,22 @@
     </div>
     </div>
 
-    
+    <!-- Modal de notificaciones -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Notificación</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCloseBtn" class="btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Sección Principal de Pedidos -->
     <section class="pedidos-hero">
         <div class="container">
@@ -100,67 +115,67 @@
             <div class="pedidos-filters">
                 <button class="filter-btn active">Todos</button>
                 <button class="filter-btn">Pendientes</button>
-                <button class="filter-btn">En camino</button>
-                <button class="filter-btn">Entregados</button>
+                <button class="filter-btn">Entregados</button>  
             </div>
 
             <h1>Lista de Pedidos</h1>
             <div id="contenedor-pedidos"></div>
 
 
-           <!-- Footer -->
-    <footer id="contacto">
-        <div class="container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>AutoPartes MX</h3>
-                <p>Tu proveedor confiable de autopartes de calidad. Ofrecemos los mejores precios y servicio al
-                    cliente excepcional.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+            <!-- Footer -->
+            <footer id="contacto">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-column">
+                            <h3>AutoPartes MX</h3>
+                            <p>Tu proveedor confiable de autopartes de calidad. Ofrecemos los mejores precios y servicio
+                                al
+                                cliente excepcional.</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="footer-column">
+                            <h3>Enlaces Rápidos</h3>
+                            <ul class="footer-links">
+                                <li><a href="#inicio">Inicio</a></li>
+                                <li><a href="#categorias">Categorías</a></li>
+                                <li><a href="#productos">Productos</a></li>
+                                <li><a href="#ofertas">Ofertas</a></li>
+                                <li><a href="#">Sobre Nosotros</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-column">
+                            <h3>Información de Contacto</h3>
+                            <ul class="contact-info">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Av. Insurgentes 123, CDMX, México</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-phone"></i>
+                                    <span>+52 55 1234 5678</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-envelope"></i>
+                                    <span>info@autopartesmx.com</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-clock"></i>
+                                    <span>Lun - Vie: 9:00 AM - 6:00 PM</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- copyright separado correctamente -->
+                    <div class="copyright">
+                        <p>&copy; 2023 AutoPartes MX. Todos los derechos reservados.</p>
+                    </div>
                 </div>
-            </div>
-
-            <div class="footer-column">
-                <h3>Enlaces Rápidos</h3>
-                <ul class="footer-links">
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#categorias">Categorías</a></li>
-                    <li><a href="#productos">Productos</a></li>
-                    <li><a href="#ofertas">Ofertas</a></li>
-                    <li><a href="#">Sobre Nosotros</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Información de Contacto</h3>
-                <ul class="contact-info">
-                    <li>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Av. Insurgentes 123, CDMX, México</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-phone"></i>
-                        <span>+52 55 1234 5678</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-envelope"></i>
-                        <span>info@autopartesmx.com</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-clock"></i>
-                        <span>Lun - Vie: 9:00 AM - 6:00 PM</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- copyright separado correctamente -->
-        <div class="copyright">
-            <p>&copy; 2023 AutoPartes MX. Todos los derechos reservados.</p>
-        </div>
-    </div>
-</footer>
+            </footer>
 
             <script src="js/pedidos.js"></script>
             <script src="js/auth.js"></script>
